@@ -1,12 +1,12 @@
-// import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
-function App() {
-
+export default function App() {
   return (
-    <main>
-      <h1>Code Group Challenger</h1>
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<main>Code Group Challenger</main>} />
+        <Route path="/test" element={<main>TESTE</main>} />
+      </Routes>
+    </BrowserRouter>
   )
 }
-
-export default App
