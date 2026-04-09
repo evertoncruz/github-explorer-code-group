@@ -24,7 +24,7 @@ src/
 
 ```bash
 git clone https://github.com/evertoncruz/github-explorer-code-group.git
-cd github-explorer
+cd github-explorer-code-group
 ```
 
 ### 2. Instalar dependências
