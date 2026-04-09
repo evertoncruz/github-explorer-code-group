@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import { api } from "../services/api"
+import { Layout } from "../components/Layout"
 
 export default function UserPage () {
   const { username } = useParams()
+  const navigate = useNavigate()
   const [user, setUser] = useState(null)
   const [repos, setRepos] = useState([])
   const [order, setOrder] = useState('desc')
@@ -44,37 +46,50 @@ export default function UserPage () {
   if (!user) return <p>Usuário não encontrado.</p>;
 
   return(
-    <div className="container mt-4">
-      <div className="d-flex align-items-center">
-        <img src={user.avatar_url} width="100" />
-        <div className="ms-3">
-          <h2>{user.name}</h2>
-          <p>{user.bio}</p>
-          <p>Seguidores: {user.followers}</p>
+    <Layout>
+      <button className="btn btn-outline-light mb-3" onClick={() => navigate(-1)}>
+        ← Voltar
+      </button>
+
+      <div className="row">
+        <div className="col-md-4">
+          <div className="card p-3 text-center">
+            <img src={user.avatar_url} className="img-fluid rounded-circle" />
+            <h4 className="mt-3">{user.name}</h4>
+            <p>{user.bio}</p>
+            <div className="d-flex justify-content-around">
+              <span>👥 {user.followers}</span>
+              <span>📦 {user.public_repos}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-md-8">
+          <div className="d-flex justify-content-between mb-3">
+            <h4>Repositórios</h4>
+            <div>
+              <button className="btn btn-sm btn-outline-light me-2" onClick={() => handleOrderChange('desc')}>
+                ↓ Stars
+              </button>
+              <button className="btn btn-sm btn-outline-light" onClick={() => handleOrderChange('asc')}>
+                ↑ Stars
+              </button>
+            </div>
+          </div>
+
+          {repos.map(repo => (
+            <div key={repo.id} className="card p-3 mb-2">
+              <div className="d-flex justify-content-between">
+                <Link to={`/repo/${repo.owner.login}/${repo.name}`}>
+                  {repo.name}
+                </Link>
+                <span>⭐ {repo.stargazers_count}</span>
+              </div>
+              <small>{repo.description}</small>
+            </div>
+          ))}
         </div>
       </div>
-
-      <div className="mt-4">
-        <button className="btn btn-secondary me-2" onClick={() => handleOrderChange('desc')}>
-          Mais estrelas
-        </button>
-        <button className="btn btn-secondary" onClick={() => handleOrderChange('asc')}>
-          Menos estrelas
-        </button>
-      </div>
-
-      <ul className="list-group mt-3">
-        {repos.map(repo => (
-          <li key={repo.id} className="list-group-item">
-            <Link to={`/repo/${repo.owner.login}/${repo.name}`}>
-              {repo.name}
-            </Link>
-            <span className="badge bg-primary ms-2">
-              ⭐ {repo.stargazers_count}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    </Layout>
   )
 }
