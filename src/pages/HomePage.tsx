@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { Layout } from "../components/Layout"
 
 export default function HomePage() {
   const [username, setUsername] = useState('')
@@ -11,17 +12,25 @@ export default function HomePage() {
   }
   
   return (
-    <div className="container mt-5">
-      <h1>GitHub Explorer</h1>
-      <form onSubmit={handleSubmit} className="mt-3">
-        <input
-          className="form-control"
-          placeholder="Digite o username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <button className="btn btn-primary mt-3">Buscar</button>
-      </form>
-    </div>
+    <Layout>
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card p-4">
+            <h3>Buscar usuário</h3>
+            <form onSubmit={handleSubmit}>
+              <input
+                className="form-control mt-3"
+                placeholder="ex: filipedeschamps"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <button className="btn btn-primary mt-3 w-100">
+                Buscar
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </Layout>
   )
 }
